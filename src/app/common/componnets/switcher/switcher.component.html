@@ -1,0 +1,13 @@
+<div class="switch-container">
+  <div class="switch">
+    <ng-container *ngFor="let item of model">
+      <div
+        class="toggle"
+        [class.active]="isSelected(item.value)"
+        (click)="toggle(item.value)"
+      >
+        {{ item.label }}
+      </div>
+    </ng-container>
+  </div>
+</div>

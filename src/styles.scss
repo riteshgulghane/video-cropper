@@ -1,0 +1,58 @@
+/* You can add global styles to this file, and also import other style files */
+body {
+  > * {
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    color: rgba(255, 255, 255, 1);
+    font-family: "sans-serif";
+  }
+  background-color: black;
+
+  .disabled {
+    opacity: 0.5;
+  }
+
+  .hidden {
+    visibility: hidden;
+  }
+
+  .page-title {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+  }
+
+  .button {
+    height: 36px;
+    padding: 9px 20px;
+    gap: 10px;
+    border-radius: 10px;
+    opacity: 1;
+    background: rgba(69, 71, 78, 1);
+    color: rgba(255, 255, 255, 1);
+
+    border: none;
+
+    &.primary-button {
+      background: rgba(124, 54, 214, 1);
+    }
+
+    &.disabled {
+      opacity: 50%;
+
+      &:hover {
+        cursor: not-allowed;
+      }
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    &:active:not(.disabled) {
+      background-color: rgb(115, 31, 224);
+      transform: scale(1.05);
+    }
+  }
+}

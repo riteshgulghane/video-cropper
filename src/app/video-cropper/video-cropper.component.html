@@ -1,0 +1,151 @@
+<div class="video-cropper-wrapper">
+  <div class="cropper-header">
+    <span class="cropper-title">Cropper</span>
+
+    <app-switcher
+      class="switcher-wrapper"
+      [model]="switcherModel"
+      [value]="selectedSwitch"
+      (toggled)="onToggle($event)"
+    ></app-switcher>
+  </div>
+
+  <div class="video-cropper">
+    <div class="video-cropper-container">
+      <div class="video-container">
+        <div class="video">
+          <video #videoElement width="100%" (loadedmetadata)="onVideoLoaded()">
+            <source src="assets/sample-video.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <canvas
+          [class.hidden]="!isPreviewAvailable"
+          class="cropper-canvas"
+          #canvasElement
+        ></canvas>
+      </div>
+
+      <div class="custom-controls">
+        <div class="play-pause-controls">
+          <div (click)="togglePlayPause()">
+            <ng-container *ngIf="isPlaying; else pauseIcon">
+              <img src="./../../assets/icons/pause.svg" />
+            </ng-container>
+
+            <ng-template #pauseIcon>
+              <img src="./../../assets/icons/play.svg" />
+            </ng-template>
+          </div>
+          <input
+            type="range"
+            min="0"
+            [max]="videoDuration"
+            [value]="currentTime"
+            (input)="onSeek($event)"
+            class="seek-bar"
+          />
+        </div>
+
+        <div class="time-sound-control">
+          <div class="timer">
+            <span>{{ currentTime | videoTime : "hh:mm:ss" }} </span>
+            <span class="disabled">|</span>
+            <span class="disabled">
+              {{ videoDuration | videoTime : "hh:mm:ss" }}</span
+            >
+          </div>
+
+          <div class="sound-control">
+            <ng-container *ngIf="isMuted; else unmuteIcon">
+              <img (click)="toggleMute()" src="./../../assets/icons/mute.svg" />
+            </ng-container>
+
+            <ng-template #unmuteIcon>
+              <img
+                (click)="toggleMute()"
+                src="./../../assets/icons/unmute.svg"
+              />
+            </ng-template>
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              [value]="volume"
+              (input)="onVolumeChange($event)"
+              class="volume-slider"
+            />
+          </div>
+        </div>
+
+        <div class="crop-speed-options">
+          <app-select
+            placeholder="Playback speed"
+            [options]="playbackSpeedOptions"
+            [selected]="selectedPlaybackSpeed"
+            (selectedChange)="onPlaybackSpeedChange($event)"
+          ></app-select>
+
+          <app-select
+            placeholder="Cropper Aspect Ratio"
+            [options]="aspectRationOptions"
+            [selected]="selectedAspectRation"
+            (selectedChange)="onAspectRatioChange($event)"
+          ></app-select>
+        </div>
+      </div>
+
+      <!-- <div class="controls">
+        <button (click)="cropVideo()">Crop Video</button>
+        <button (click)="downloadCroppedVideo()">Download Cropped Video</button>
+      </div> -->
+    </div>
+
+    <div class="preview-wrapper">
+      <span class="preview-label"> Preview </span>
+      <div class="preview-box" *ngIf="!isPreviewAvailable">
+        <div class="preview-not-available" *ngIf="!isPreviewAvailable">
+          <div class="">
+            <img src="./../../assets/icons/youtube.svg" />
+          </div>
+          <span>Preview not available</span>
+          <span class="description"
+            >Please click on “Start Cropper” and then play video</span
+          >
+        </div>
+      </div>
+
+      <div class="preview-box" [class.hidden]="!isPreviewAvailable">
+        <div class="preview-container">
+          <canvas #previewCanvasElement></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cropper-footer">
+    <div class="footer-container">
+      <div class="action-buttons">
+        <button
+          class="button primary-button"
+          [class.disabled]="isPreviewAvailable"
+          (click)="toggleCropper(true)"
+        >
+          Start Cropper
+        </button>
+        <button
+          class="button primary-button"
+          [class.disabled]="!isPreviewAvailable"
+          (click)="toggleCropper(false)"
+        >
+          Remove Cropper
+        </button>
+        <button class="button primary-button">Generate Preview</button>
+      </div>
+      <div class="cancel-button">
+        <button class="button">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
