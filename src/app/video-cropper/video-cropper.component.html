@@ -5,13 +5,16 @@
     <app-switcher
       class="switcher-wrapper"
       [model]="switcherModel"
-      [value]="selectedSwitch"
-      (toggled)="onToggle($event)"
+      [value]="currentSession"
+      (toggled)="onToggleSession($event)"
     ></app-switcher>
   </div>
 
   <div class="video-cropper">
-    <div class="video-cropper-container">
+    <div
+      class="video-cropper-container"
+      [class.preview-session]="isPreviewSession"
+    >
       <div class="video-container">
         <div class="video">
           <video #videoElement width="100%" (loadedmetadata)="onVideoLoaded()">
@@ -95,14 +98,9 @@
           ></app-select>
         </div>
       </div>
-
-      <!-- <div class="controls">
-        <button (click)="cropVideo()">Crop Video</button>
-        <button (click)="downloadCroppedVideo()">Download Cropped Video</button>
-      </div> -->
     </div>
 
-    <div class="preview-wrapper">
+    <div class="preview-wrapper" [class.preview-session]="isPreviewSession">
       <span class="preview-label"> Preview </span>
       <div class="preview-box" *ngIf="!isPreviewAvailable">
         <div class="preview-not-available" *ngIf="!isPreviewAvailable">
@@ -119,6 +117,14 @@
       <div class="preview-box" [class.hidden]="!isPreviewAvailable">
         <div class="preview-container">
           <canvas #previewCanvasElement></canvas>
+
+          <div class="upload-container">
+            <input
+              type="file"
+              (change)="onFileSelected($event)"
+              accept=".json"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -126,7 +132,7 @@
 
   <div class="cropper-footer">
     <div class="footer-container">
-      <div class="action-buttons">
+      <div class="action-buttons" *ngIf="!isPreviewSession">
         <button
           class="button primary-button"
           [class.disabled]="isPreviewAvailable"
@@ -141,7 +147,14 @@
         >
           Remove Cropper
         </button>
-        <button class="button primary-button">Generate Preview</button>
+        <button class="button primary-button" (click)="onGeneratePreview()">
+          Generate Preview
+        </button>
+      </div>
+      <div *ngIf="isPreviewSession">
+        <button class="button primary-button" (click)="onStartPreview()">
+          Start Preview
+        </button>
       </div>
       <div class="cancel-button">
         <button class="button">Cancel</button>

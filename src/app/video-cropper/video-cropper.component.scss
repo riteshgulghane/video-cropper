@@ -66,6 +66,13 @@
     flex-direction: column;
     align-items: center;
     flex: 50%;
+    transition: all 1s ease-in-out;
+
+    &.preview-session {
+      visibility: hidden;
+      transform: translate(-100%);
+      transition: all 1s ease-in-out;
+    }
   }
 
   .preview-wrapper {
@@ -75,6 +82,12 @@
     height: 100%;
     display: flex;
     justify-content: center;
+    transition: all 1s ease-in-out;
+
+    &.preview-session {
+      transition: all 1s ease-in-out;
+      transform: translate(-50%);
+    }
 
     .preview-box {
       position: absolute;
@@ -199,4 +212,16 @@
   .preview-container canvas {
     border: 1px solid #000;
   }
+}
+
+.upload-container {
+  text-align: center;
+  width: 300px;
+  margin: auto;
+  cursor: pointer;
+}
+
+input[type="file"] {
+  display: block;
+  margin: auto;
 }
